@@ -1,0 +1,39 @@
+# MirukaStore - Apache Configuration
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Set base directory (ubah sesuai dengan folder instalasi)
+# RewriteBase /MirukaStore/
+
+# Redirect to HTTPS (opsional - uncomment jika menggunakan SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Don't rewrite files or directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite all other URLs to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect config files
+<FilesMatch "\.(sql|log|ini)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# PHP Settings (bisa juga diatur di php.ini)
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
